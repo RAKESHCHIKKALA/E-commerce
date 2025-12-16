@@ -1,8 +1,10 @@
 const mongoose=require("mongoose");
+require("dotenv").config();
 const connectDB=async()=>{
     try{
-        await mongoose.connect("mongodb://127.0.0.1:27017/ecommerce");
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("mongodb connected ");
+        console.log("DB HOST:", mongoose.connection.host);
 
     }catch(err){
         console.log("failed  to connect db");

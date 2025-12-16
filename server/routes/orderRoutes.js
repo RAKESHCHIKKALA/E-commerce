@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const Order = require("../models/ordermodel");
 const Product = require("../models/productmodel");
-const verifyAdmin = require("../middleware/verifyAdmin");
-const verifyUser = require("../middleware/verifyUser"); // optional for user routes
+const verifyAdmin = require("../middleware/verifyadmin");
+const verifyUser = require("../middleware/verifyuser"); // optional for user routes
 
 // User: create order & decrement stock
 router.post("/", verifyUser, async (req, res) => {
