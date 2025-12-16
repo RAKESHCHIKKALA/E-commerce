@@ -4,8 +4,8 @@ import axios from "axios";
 
 import Navbar from "./pages/navbar/navbar";
 import Signup from "./pages/signup/signup";
-import Signin from "./pages/Signin/signin";
-import Home from "./pages/Home/home";
+import Signin from "./pages/signin/signin";
+import Home from "./pages/home/home";
 import Profile from "./pages/profile/profile";
 import Cart from "./pages/cart/cart";
 import ProductDetail from "./pages/product/product";
