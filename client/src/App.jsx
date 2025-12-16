@@ -21,7 +21,7 @@ import UserOrders from "./pages/orders/orders"
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true); // prevents flicker
-  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+  const API_BASE = import.meta.env.VITE_API_url || "http://localhost:1234";
 
   useEffect(() => {
   const token = localStorage.getItem("token");
@@ -33,7 +33,7 @@ function App() {
   }
 
   axios
-    .get(`${API_BASE}/api/users/me`, {
+    .get(`${API_BASE}/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(() => {

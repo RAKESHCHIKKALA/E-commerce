@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./home.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
@@ -22,7 +22,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get(`${API_BASE}/api/products`)
+      .get(`${API_BASE}/products`)
       .then((res) => {
         setProducts(res.data);
         const maxP = Math.max(...res.data.map((p) => Number(p.price) || 0), 0);
@@ -38,7 +38,7 @@ function Home() {
     const loadCart = async () => {
       if (!token || isAdmin) return;
       try {
-        const res = await axios.get(`${API_BASE}/api/cart`, {
+        const res = await axios.get(`${API_BASE}/cart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const ids = new Set(
@@ -111,7 +111,7 @@ function Home() {
     }
     try {
       await axios.post(
-        `${API_BASE}/api/cart`,
+        `${API_BASE}/cart`,
         { productId, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );

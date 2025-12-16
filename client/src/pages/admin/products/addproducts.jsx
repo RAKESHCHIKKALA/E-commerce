@@ -37,11 +37,11 @@ function ManageProducts() {
 
   const token = localStorage.getItem("token");
 
-  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
   // Fetch products
   const fetchProducts = async () => {
-    const res = await axios.get(`${API_BASE}/api/products`);
+    const res = await axios.get(`${API_BASE}/products`);
     setProducts(res.data);
     setFiltered(res.data);
   };
@@ -311,14 +311,14 @@ function ManageProducts() {
 
     try {
       if (editingId) {
-        await axios.put(`${API_BASE}/api/products/${editingId}`, fd, {
+        await axios.put(`${API_BASE}/products/${editingId}`, fd, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         });
       } else {
-        await axios.post(`${API_BASE}/api/products/add`, fd, {
+        await axios.post(`${API_BASE}/products/add`, fd, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -335,12 +335,15 @@ function ManageProducts() {
 
   // Delete Product
   const deleteProduct = async (id) => {
-    if (!confirm("Are you sure to delete?")) return;
-    await axios.delete(`http://localhost:1234/api/products/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    fetchProducts();
-  };
+  if (!confirm("Are you sure to delete?")) return;
+
+  await axios.delete(`${API_BASE}/products/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  fetchProducts();
+};
+
 
   return (
     <div className="container">

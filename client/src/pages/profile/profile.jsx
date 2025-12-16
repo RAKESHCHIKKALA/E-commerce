@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./profile.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -17,7 +17,7 @@ function Profile() {
   const loadProfile = async () => {
     if (!token) return;
     try {
-      const res = await axios.get(`${API_BASE}/api/users/me`, {
+      const res = await axios.get(`${API_BASE}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);
@@ -25,7 +25,7 @@ function Profile() {
       setAddresses(res.data.addresses?.length ? res.data.addresses : []);
       // fetch order count in parallel
       try {
-        const ordersRes = await axios.get(`${API_BASE}/api/orders/myorders`, {
+        const ordersRes = await axios.get(`${API_BASE}/orders/myorders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrderCount(Array.isArray(ordersRes.data) ? ordersRes.data.length : 0);
@@ -64,7 +64,7 @@ function Profile() {
   const saveProfile = async () => {
     try {
       const res = await axios.put(
-        `${API_BASE}/api/users/me`,
+        `${API_BASE}/users/me`,
         { phone, addresses },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -20,7 +20,8 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:1234/api/users/register", form);
+      const res = await axios.post(`${API_BASE}/users/register`, form);
+
 
       // If backend sends token — save it
       if (res.data.token) {

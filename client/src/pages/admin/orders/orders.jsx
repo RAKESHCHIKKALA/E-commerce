@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./orders.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -11,7 +11,7 @@ function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`${API_BASE}/api/orders/admin`, {
+      const res = await axios.get(`${API_BASE}/orders/admin`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOrders(res.data);
@@ -30,7 +30,7 @@ function AdminOrders() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `${API_BASE}/api/orders/admin/${orderId}`,
+        `${API_BASE}/orders/admin/${orderId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

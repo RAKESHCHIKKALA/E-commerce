@@ -3,7 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./buy.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function Buy() {
   const { id } = useParams();
@@ -56,7 +56,7 @@ function Buy() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/api/products/${id}`);
+        const res = await axios.get(`${API_BASE}/products/${id}`);
         setProduct(res.data);
         if (res.data.color) setSelectedColor(res.data.color);
         if (Array.isArray(res.data.sizes) && res.data.sizes.length > 0) {
@@ -73,7 +73,7 @@ function Buy() {
     const fetchProfile = async () => {
       if (!token) return;
       try {
-        const res = await axios.get(`${API_BASE}/api/users/me`, {
+        const res = await axios.get(`${API_BASE}/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const addrs = res.data.addresses || [];
@@ -102,7 +102,7 @@ function Buy() {
     if (isAdmin) return alert("Admins cannot add items to cart.");
     try {
       await axios.post(
-        `${API_BASE}/api/cart`,
+        `${API_BASE}/cart`,
         { productId: product._id, quantity: quantity || 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -124,7 +124,7 @@ function Buy() {
     try {
       const total = (product.price || product.offerPrice || 0) * quantity;
       await axios.post(
-        `${API_BASE}/api/orders`,
+        `${API_BASE}/orders`,
         {
           products: [{ product: product._id, quantity }],
           totalPrice: total,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./admindashboard.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -10,7 +10,7 @@ function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/api/admin/stats`);
+      const res = await axios.get(`${API_BASE}/admin/stats`);
       setStats(res.data);
     } catch (err) {
       console.error("Stats load error", err);

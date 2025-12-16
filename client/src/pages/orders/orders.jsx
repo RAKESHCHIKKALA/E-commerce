@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./orders.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function UserOrders() {
   const [orders, setOrders] = useState([]);
@@ -17,7 +17,7 @@ function UserOrders() {
         return;
       }
       try {
-        const res = await axios.get(`${API_BASE}/api/orders/myorders`, {
+        const res = await axios.get(`${API_BASE}/orders/myorders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(res.data);

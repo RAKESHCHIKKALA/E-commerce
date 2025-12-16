@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./cart.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function Cart() {
   const [items, setItems] = useState([]);
@@ -25,7 +25,7 @@ function Cart() {
       return;
     }
     try {
-      const res = await axios.get(`${API_BASE}/api/cart`, {
+      const res = await axios.get(`${API_BASE}/cart`, {
         headers: authHeader,
       });
       setItems(res.data);
@@ -44,7 +44,7 @@ function Cart() {
   const updateQuantity = async (productId, quantity) => {
     try {
       const res = await axios.put(
-        `${API_BASE}/api/cart/${productId}`,
+        `${API_BASE}/cart/${productId}`,
         { quantity },
         { headers: authHeader }
       );
@@ -56,7 +56,7 @@ function Cart() {
 
   const removeItem = async (productId) => {
     try {
-      const res = await axios.delete(`${API_BASE}/api/cart/${productId}`, {
+      const res = await axios.delete(`${API_BASE}/cart/${productId}`, {
         headers: authHeader,
       });
       setItems(res.data);

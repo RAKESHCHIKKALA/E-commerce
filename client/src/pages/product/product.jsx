@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./product.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:1234";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234";
 
 function ProductDetail() {
   const { id } = useParams();
@@ -76,7 +76,7 @@ function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/api/products/${id}`);
+        const res = await axios.get(`${API_BASE}/products/${id}`);
         setProduct(res.data);
         if (res.data.color) {
           setSelectedColor(res.data.color);
@@ -101,7 +101,7 @@ function ProductDetail() {
       if (!token || isAdmin) return;
       setCheckingCart(true);
       try {
-        const res = await axios.get(`${API_BASE}/api/cart/check/${id}`, {
+        const res = await axios.get(`${API_BASE}/cart/check/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data?.inCart) setAdded(true);
@@ -119,7 +119,7 @@ function ProductDetail() {
     if (isAdmin) return alert("Admins cannot add items to cart.");
     try {
       await axios.post(
-        `${API_BASE}/api/cart`,
+        `${API_BASE}/cart`,
         { productId: product._id, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
