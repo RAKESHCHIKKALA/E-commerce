@@ -11,7 +11,7 @@ function Signup() {
   });
 
   const navigate = useNavigate();
-
+  const API_BASE = import.meta.env.VITE_API_URL;
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -20,8 +20,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${API_URL}/users/register`, form);
-
+      const res = axios.post(`${API_BASE}/users/register`, form);
 
       // If backend sends token — save it
       if (res.data.token) {
