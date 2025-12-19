@@ -2,6 +2,7 @@ const express=require('express');
 
 
 require("dotenv").config();
+import path from "path";
 
 const PORT = process.env.PORT;
 const cors=require("cors");
@@ -22,6 +23,16 @@ app.use("/api/cart", cartRoutes);
 
 app.use("/api-+/admin", adminRoutes);
 
+
+
+const __dirname = path.resolve();
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+/* 4️⃣ SPA fallback (MUST BE LAST) */
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 app.listen(PORT,()=>{
     console.log("server started at 1234");
