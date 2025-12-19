@@ -1,41 +1,36 @@
-const express=require('express');
-
-
-require("dotenv").config();
+import express from "express";
 import path from "path";
+import dotenv from "dotenv";
+import cors from "cors";
 
-const PORT = process.env.PORT;
-const cors=require("cors");
-const connectDB=require("./config/db");
-const adminRoutes = require("./routes/admin");
-const cartRoutes = require("./routes/cartRoutes");
-const app=express();
+import connectDB from "./config/db.js";
+import adminRoutes from "./routes/admin.js";
+import cartRoutes from "./routes/cartRoutes.js";
+
+dotenv.config();
+
+const PORT = process.env.PORT || 1234;
+const app = express();
+
 connectDB();
+
 app.use(cors());
 app.use(express.json());
+
 console.log("Cloudinary cloud:", process.env.CLOUD_NAME);
-app.use('/uploads', express.static('uploads'));
 
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/products", require("./routes/productRoutes"));
-app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/uploads", express.static("uploads"));
+
+app.use("/api/users", (await import("./routes/userRoutes.js")).default);
+app.use("/api/products", (await import("./routes/productRoutes.js")).default);
+app.use("/api/orders", (await import("./routes/orderRoutes.js")).default);
 app.use("/api/cart", cartRoutes);
+app.use("/api/admin", adminRoutes);
 
-app.use("/api-+/admin", adminRoutes);
+/* ⚠️ REMOVE dist serving (you DON'T have dist here) */
+// ❌ app.use(express.static(path.join(__dirname, "dist")));
+// ❌ app.get("*", ...)
 
-
-
-const __dirname = path.resolve();
-
-app.use(express.static(path.join(__dirname, "dist")));
-
-/* 4️⃣ SPA fallback (MUST BE LAST) */
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
-
-app.listen(PORT,()=>{
-    console.log("server started at 1234");
-})
-
-
