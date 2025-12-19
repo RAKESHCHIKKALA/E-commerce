@@ -15,26 +15,29 @@ function Signup() {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/users/register`,
+      form
+    );
 
-    try {
-      const res = axios.post(`${API_BASE}/users/register`, form);
-
-      // If backend sends token — save it
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-         window.dispatchEvent(new Event("storage"));
-      }
-
-      alert("Signup Successful!");
-      navigate("/"); // redirect to home
-    } catch (err) {
-      alert("Registration Failed");
-      console.error(err);
+    // SAFETY CHECK
+    if (res?.data?.token) {
+      localStorage.setItem("token", res.data.token);
+      window.dispatchEvent(new Event("storage"));
     }
-  };
+
+    alert("Signup Successful!");
+    navigate("/");
+
+  } catch (err) {
+    console.error("Signup error:", err.response?.data || err.message);
+    alert(err.response?.data?.message || "Registration Failed");
+  }
+};
 
   return (
     <div className="auth-shell">
